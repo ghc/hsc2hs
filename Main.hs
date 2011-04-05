@@ -222,7 +222,7 @@ getExecPath :: IO (Maybe String)
 #if defined(mingw32_HOST_OS)
 getExecPath = try_size 2048 -- plenty, PATH_MAX is 512 under Win32.
   where
-    try_size size = allocaArray size $ \buf -> do
+    try_size size = allocaArray (fromIntegral size) $ \buf -> do
         ret <- c_GetModuleFileName nullPtr buf size
         case ret of
           0 -> return Nothing
